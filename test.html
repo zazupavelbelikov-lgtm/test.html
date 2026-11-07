@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Тест базы</title></head>
+<body style="background:#0f1117; color:#eee; font-family:sans-serif; padding:20px;">
+  <h1>Проверка связи с базой</h1>
+  <div id="result" style="font-size:18px; margin-top:20px; padding:15px; border-radius:8px; border:1px solid #444;">Подключение...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const url = 'https://slffatuydefaeyubzbdy.supabase.co';
+    const key = 'sb_publishable_ogYcil-HDN-jaAn1mOmavA_HkZ6_vc8';
+    
+    try {
+      const supabase = window.supabase.createClient(url, key);
+      
+      // Пробуем запросить 1 строчку из таблицы rooms
+      supabase.from('rooms').select('*').limit(1).then(({ data, error }) => {
+        const resDiv = document.getElementById('result');
+        if (error) {
+          resDiv.style.background = '#7f1d1d';
+          resDiv.innerHTML = "<b>ОШИБКА БАЗЫ:</b><br>" + error.message + "<br><br>Значит, таблицы не созданы или неверный ключ.";
+        } else {
+          resDiv.style.background = '#064e3b';
+          resDiv.innerHTML = "<b>УСПЕХ!</b><br>Связь есть. Таблица rooms найдена. Код на GitHub работает неправильно.";
+        }
+      });
+    } catch (e) {
+      document.getElementById('result').innerText = "КРИТИЧЕСКАЯ ОШИБКА: " + e.message;
+    }
+  </script>
+</body>
+</html>
